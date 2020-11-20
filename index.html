@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.6/turf.min.js"></script>
+</head>
+<body>
+    <div id="map" style="height: 500px;"></div>
+    <script>
+        const map = L.map('map').setView([51.505, -0.09], 13);
+
+        L.tileLayer('https://c.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>',
+        }).addTo(map);
+
+        const polygon = L.polygon([
+        [
+            [
+            51.49634719159713,
+            -0.12170791625976562,
+            ],
+            [
+            51.49634719159713,
+            -0.07535934448242188,
+            ],
+            [
+            51.51515248101072,
+            -0.07535934448242188,
+            ],
+            [
+            51.51515248101072,
+            -0.12170791625976562,
+            ],
+            [
+            51.49634719159713,
+            -0.12170791625976562,
+            ]
+        ]
+        ]).addTo(map);
+
+        const polygonGeoJSON = polygon.toGeoJSON();
+
+        turf.coordEach(polygonGeoJSON, coords => coords.reverse());
+
+        console.log(polygonGeoJSON.geometry.coordinates)
+
+        /**
+         * Output coords:
+         * [-0.121708, 51.496347],
+         * [51.496347, -0.075359],
+         * [51.515152, -0.075359],
+         * [51.515152, -0.121708],
+         * [-0.121708, 51.496347]
+         */
+    </script>
+</body>
+</html>
